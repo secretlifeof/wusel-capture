@@ -1,0 +1,351 @@
+@import 'tailwindcss';
+
+/* Shared Wusel design tokens (colors, radii, fonts). Single source of truth
+   lives in the local @wusel-capture/tailwind-config package. */
+@import '@wusel-capture/tailwind-config/theme.css';
+
+/* Tailwind content sources: this app's own files plus the local UI + icons
+   packages we render, so their utility classes (and the directional icons'
+   `rtl:-scale-x-100`) get generated. Paths are relative to THIS file
+   (apps/app/src/) — three levels up reaches the repo root's packages/. */
+@source './**/*.{ts,tsx}';
+@source '../../../packages/ui/src/**/*.{ts,tsx}';
+@source '../../../packages/icons/src/**/*.{ts,tsx}';
+/* The hero embeds a scaled replica of the real editor by reusing its components,
+   so Tailwind must scan the editor + its local UI to generate their classes. */
+@source '../../../packages/wusel-capture/src/editor/**/*.{ts,tsx}';
+@source '../../../packages/wusel-capture/src/ui/**/*.{ts,tsx}';
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* The footer's rounded top corners reveal the 6rem overlap gap behind it (see
+   `.landing-footer` / `landing-footer-curve` in the shared theme). Make that gap
+   match the lavender Get-started section above (instead of the cream sand-50 page
+   background) so the curve reads as an intentional blend, not a white notch.
+   Safe because every landing section paints its own solid background — main's
+   background only shows through this gap. */
+.landing-page > main {
+  background: var(--color-lavender-600);
+}
+
+/* Hero word rotator (see WordRotator in components/landing/hero.tsx): the word
+   types in one character at a time, holds, then blurs out. An invisible in-flow
+   sizer holds each word's measured width, and transitions between them so the
+   following text ("in the browser.") glides to its new spot on every swap. The
+   animated word is clipped to that slot, so it can never overlap the text. */
+.wc-slot {
+  white-space: nowrap;
+  transition: width 320ms ease;
+}
+/* Clip only while typing: a growing word must not spill past the gliding text,
+   but the blur-out (leaving) should show its soft halo, not a hard-cut box. */
+.wc-clip {
+  overflow: visible;
+}
+.wc-clip[data-phase='typing'] {
+  overflow: hidden;
+}
+.wc-word {
+  white-space: nowrap;
+}
+.wc-word[data-phase='leaving'] {
+  opacity: 0;
+  filter: blur(10px);
+  transition:
+    opacity 450ms ease,
+    filter 450ms ease;
+}
+/* Each character fades in on a stagger (animation-delay set per char in JS). */
+.wc-char {
+  opacity: 0;
+  animation: wc-char 90ms ease forwards;
+}
+@keyframes wc-char {
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wc-slot {
+    transition: none;
+  }
+  .wc-word {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .wc-char {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+/* How-it-works step cards: a lavender "snake" (a comet-arc with a soft, fading
+   tail) grows out and travels once around each card's border in turn (01 -> 02
+   -> 03), then slithers off — the border never stays solid lavender. A soft
+   lavender glow blooms around the active card. Only the border/glow animate.
+   The snake is a conic-gradient arc between two animated angles: --wc-head (the
+   bright leading tip) and a tail that trails --wc-len behind it, fading to
+   transparent along its length (the "opacity" look). The mask punches out the
+   interior so only the border ring shows. One shared 7.5s cycle keeps all three
+   phase-locked (pure CSS, no JS timers). See how-it-works.tsx. */
+@property --wc-head {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --wc-len {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.wc-step::after {
+  content: '';
+  position: absolute;
+  inset: -1px; /* align the ring's outer edge with the card border */
+  border-radius: inherit;
+  padding: 1.5px; /* ring thickness (tunable) */
+  /* A comet arc that fades in over its tail AND back out at its nose, so both
+     ends are soft (no hard leading edge). Stops: transparent-lavender up to the
+     tail, ramp to solid lavender peaking ~18deg behind the head, then fade back
+     to transparent right at the head. Both transparent endpoints share the
+     lavender hue (alpha 0 via relative colour) so it fades cleanly, not to grey. */
+  background: conic-gradient(
+    from -90deg,
+    oklch(from var(--color-lavender-500) l c h / 0) 0deg,
+    oklch(from var(--color-lavender-500) l c h / 0)
+      max(0deg, calc(var(--wc-head) - var(--wc-len))),
+    var(--color-lavender-500) max(0deg, calc(var(--wc-head) - 18deg)),
+    oklch(from var(--color-lavender-500) l c h / 0) var(--wc-head),
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.wc-steps > .wc-step:nth-child(1)::after {
+  animation: wc-snake-1 7.5s linear infinite;
+}
+.wc-steps > .wc-step:nth-child(2)::after {
+  animation: wc-snake-2 7.5s linear infinite;
+}
+.wc-steps > .wc-step:nth-child(3)::after {
+  animation: wc-snake-3 7.5s linear infinite;
+}
+
+/* Soft lavender glow around the whole card, faded in/out to match its snake. */
+.wc-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 0 22px 1px color-mix(in oklab, var(--color-lavender-400) 45%, transparent);
+}
+.wc-steps > .wc-step:nth-child(1) .wc-glow {
+  animation: wc-glow-1 7.5s linear infinite;
+}
+.wc-steps > .wc-step:nth-child(2) .wc-glow {
+  animation: wc-glow-2 7.5s linear infinite;
+}
+.wc-steps > .wc-step:nth-child(3) .wc-glow {
+  animation: wc-glow-3 7.5s linear infinite;
+}
+
+/* Snake per card: grow + travel once around (eased), a brief hold, then retract
+   the tail into the head so it vanishes. Idle (len 0 = invisible) the rest of
+   the cycle. The three sets are the same motion offset into thirds of the loop. */
+@keyframes wc-snake-1 {
+  0% {
+    --wc-head: 0deg;
+    --wc-len: 0deg;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  }
+  19% {
+    --wc-head: 360deg;
+    --wc-len: 135deg;
+    animation-timing-function: linear;
+  }
+  23% {
+    --wc-head: 360deg;
+    --wc-len: 135deg;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.35, 1);
+  }
+  30%,
+  100% {
+    --wc-head: 360deg;
+    --wc-len: 0deg;
+  }
+}
+@keyframes wc-snake-2 {
+  0%,
+  33% {
+    --wc-head: 0deg;
+    --wc-len: 0deg;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  }
+  52% {
+    --wc-head: 360deg;
+    --wc-len: 135deg;
+    animation-timing-function: linear;
+  }
+  56% {
+    --wc-head: 360deg;
+    --wc-len: 135deg;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.35, 1);
+  }
+  63%,
+  100% {
+    --wc-head: 360deg;
+    --wc-len: 0deg;
+  }
+}
+@keyframes wc-snake-3 {
+  0%,
+  66% {
+    --wc-head: 0deg;
+    --wc-len: 0deg;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  }
+  85% {
+    --wc-head: 360deg;
+    --wc-len: 135deg;
+    animation-timing-function: linear;
+  }
+  89% {
+    --wc-head: 360deg;
+    --wc-len: 135deg;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.35, 1);
+  }
+  96%,
+  100% {
+    --wc-head: 360deg;
+    --wc-len: 0deg;
+  }
+}
+
+/* Glow: fade in as the snake grows, hold, fade out as it retracts. */
+@keyframes wc-glow-1 {
+  0% {
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  23% {
+    opacity: 1;
+  }
+  30%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes wc-glow-2 {
+  0%,
+  33% {
+    opacity: 0;
+  }
+  37% {
+    opacity: 1;
+  }
+  56% {
+    opacity: 1;
+  }
+  63%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes wc-glow-3 {
+  0%,
+  66% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  89% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-step::after,
+  .wc-glow {
+    animation: none !important;
+    opacity: 0;
+  }
+}
+
+/* Hero editor mock (see AnnotationOverlay in components/landing/hero.tsx): the markup
+   builds up in two steps on a looping 9s cycle — (1) a black annotation box appears
+   around the screenshot's headline (it is NOT there at page load), then (2) the note
+   "Change font color to lavender" is hand-written inside it (Caveat, revealed left→right
+   by a clip rect whose width grows via SMIL). Both hold, fade, and repeat. #1a1a1a
+   matches the extension's black annotation ink. */
+.wc-anno-box {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 2.5px;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+  opacity: 0; /* absent at load — appears via wc-anno-box */
+  animation: wc-anno-box 9s ease-in-out infinite;
+}
+.wc-anno-write {
+  fill: #1a1a1a;
+  font-family: 'Caveat', ui-sans-serif, cursive;
+  font-size: 40px; /* viewBox units */
+  font-weight: 600;
+  animation: wc-anno-fade 9s ease-in-out infinite;
+}
+/* step 1: box appears (quick fade-in), then HOLDS on its own before the note starts */
+@keyframes wc-anno-box {
+  0% {
+    opacity: 0;
+  }
+  5%,
+  88% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    opacity: 0;
+  }
+}
+/* step 2: note stays hidden through the box's solo beat, then writes in (18% →),
+   holds, and fades — so the two never animate in parallel (see SMIL keyTimes too) */
+@keyframes wc-anno-fade {
+  0%,
+  18% {
+    opacity: 0;
+  }
+  21%,
+  88% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wc-anno-box,
+  .wc-anno-write {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+

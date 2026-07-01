@@ -1,0 +1,10 @@
+{
+  "extends": "@wusel-capture/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts", "src/routeTree.gen.ts"]
+}

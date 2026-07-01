@@ -1,0 +1,34 @@
+{
+  "name": "@wusel-capture/extension",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Wusel Capture: screenshot a page (full/viewport/region), annotate it, and send the annotated image + JSON browser-context to Claude Code (or export it).",
+  "type": "module",
+  "exports": {
+    "./editor": "./src/editor/index.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node scripts/build-scripts.mjs",
+    "dev": "node scripts/build-scripts.mjs --watch",
+    "type-check": "oxlint --type-aware --type-check --ignore-pattern='*.test.*' --ignore-pattern='*.spec.*'"
+  },
+  "dependencies": {
+    "@wusel-capture/icons": "workspace:*",
+    "@wusel-capture/tailwind-config": "workspace:*",
+    "clsx": "^2.1.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@wusel-capture/tsconfig": "workspace:*",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/chrome": "^0.0.300",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.0",
+    "esbuild": "^0.27.0",
+    "vite": "^8.0.0"
+  }
+}

@@ -1,0 +1,1376 @@
+/**
+ * Wusel shared Tailwind v4 theme and global styles.
+ *
+ * Source of truth: extracted verbatim from apps/app/src/app.css. Consumers
+ * import this after `@import "tailwindcss"`. Each app keeps its own `@source`
+ * directives so content detection roots at the app.
+ */
+
+@plugin 'tailwindcss-animate';
+
+/* Radix Dialog sets pointer-events: none on <body> in modal mode, which blocks
+   browser-native password autofill popups (iCloud Keychain, 1Password, etc.).
+   The DialogOverlay already prevents interaction behind the dialog. */
+body[style*='pointer-events: none'] {
+  pointer-events: auto !important;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --breakpoint-3xl: 90rem;
+  --font-sans:
+    'Geist', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* Sand/Warm Neutral - Primary backgrounds */
+  --color-sand-50: oklch(98.5% 0.004 85);
+  --color-sand-100: oklch(97% 0.007 84);
+  --color-sand-200: oklch(95% 0.011 83);
+  --color-sand-300: oklch(92% 0.016 82);
+  --color-sand-400: oklch(88% 0.022 80);
+  --color-sand-500: oklch(82% 0.03 78);
+  --color-sand-600: oklch(72% 0.038 76);
+  --color-sand-700: oklch(60% 0.044 74);
+
+  /* Bark/Warm Brown - Actions & text */
+  --color-bark-50: oklch(74% 0.04 70);
+  --color-bark-200: oklch(60% 0.05 66);
+  --color-bark-300: oklch(52% 0.055 64);
+  --color-bark-400: oklch(44% 0.055 62);
+  --color-bark-500: oklch(37% 0.05 60);
+  --color-bark-600: oklch(32% 0.048 58);
+  --color-bark-700: oklch(27% 0.045 56);
+  --color-bark-800: oklch(22% 0.06 54);
+  --color-bark-900: oklch(19% 0.04 52);
+  --color-bark-950: oklch(15% 0.03 50);
+
+  /* Sage (Pastel Green) - Important surfaces */
+  --color-sage-100: oklch(95% 0.025 138);
+  --color-sage-200: oklch(92% 0.04 136);
+  --color-sage-300: oklch(87% 0.055 134);
+  --color-sage-400: oklch(80% 0.07 132);
+  --color-sage-500: oklch(70% 0.08 130);
+  --color-sage-600: oklch(60% 0.075 128);
+  --color-sage-700: oklch(50% 0.065 126);
+  --color-sage-800: oklch(40% 0.05 124);
+  --color-sage-900: oklch(32% 0.035 122);
+  --color-sage-950: oklch(24% 0.025 120);
+
+  /* Lavender (Pastel Purple) - Important surfaces */
+  --color-lavender-50: oklch(97% 0.015 290);
+  --color-lavender-100: oklch(95% 0.025 288);
+  --color-lavender-200: oklch(92% 0.035 286);
+  --color-lavender-300: oklch(87% 0.06 284);
+  --color-lavender-400: oklch(80% 0.13 282);
+  --color-lavender-500: oklch(69% 0.15 280);
+  --color-lavender-600: oklch(60% 0.14 278);
+  --color-lavender-700: oklch(50% 0.08 276);
+  --color-lavender-800: oklch(40% 0.065 274);
+  --color-lavender-900: oklch(32% 0.045 272);
+  --color-lavender-950: oklch(24% 0.03 270);
+
+  /* Core Signal Colors */
+  --color-signal-red: oklch(66% 0.225 30); /* #FF4433 */
+
+  /* Ratio Status Colors - derived from signal colors */
+
+  --color-ratio-critical: var(--color-signal-red);
+
+  /* No data (Sandy Gray) */
+
+  /* Status text colors - semantic colors for status indicators */
+
+  /* Fuchsia/Magenta - AI/LLM accent */
+
+  /* Workflow Node Colors */
+  /* Default nodes - grey background */
+
+  /* AI/LLM nodes - fuchsia accent */
+
+  /* Trigger nodes - lavender accent */
+
+  /* Entity Status Colors - Sandy/Earthy palette for status indicators */
+  /* Active - Sage green (healthy, current) */
+  --color-entity-active: var(--color-sage-600);
+
+  /* Planned - Lavender (future, scheduled) */
+  --color-entity-planned: var(--color-lavender-600);
+
+  /* Pending - Warm sand/amber (waiting, in process) */
+  --color-entity-pending: var(--color-sand-600);
+
+  /* Completed - Bark/muted brown (finished, past) */
+  --color-entity-completed: var(--color-bark-300);
+
+  /* Cancelled/Inactive - Terracotta/muted red */
+  --color-entity-cancelled: var(--color-ratio-critical-muted);
+
+  /* Inactive - Muted bark */
+  --color-entity-inactive: var(--color-bark-300);
+
+  /* Staff Time Calendar Event Types */
+  /* Work Schedule - Lavender (scheduled, planned work) */
+
+  /* Vacation - Sage (approved time off) */
+
+  /* Attendance Present - Sage (healthy, on time) */
+
+  /* Attendance Absent - Danger (not present) */
+
+  /* Attendance Late - Warning (arrived late) */
+
+  /* Absence Request - Bark (leave request) */
+
+  /* Pure white/black for extremes */
+  --color-white: oklch(1 0 0);
+  --color-black: oklch(0 0 0);
+
+  /* Near-white variants */
+  --color-white-soft: oklch(0.99 0.01 318);
+
+  /* Near-black variants */
+
+  /* Neutral grays (hue-less) */
+
+  /* Destructive/danger colors */
+  --color-danger-50: oklch(95% 0.03 25);
+  --color-danger-100: oklch(85% 0.08 25);
+  --color-danger-500: oklch(59% 0.2 25);
+  --color-danger-600: oklch(45% 0.12 25);
+  --color-danger-700: oklch(35% 0.12 25);
+
+  /* Chart colors */
+  --color-chart-1: oklch(0.646 0.222 41.116);
+  --color-chart-2: oklch(0.6 0.118 184.704);
+  --color-chart-3: oklch(0.398 0.07 227.392);
+  --color-chart-4: oklch(0.828 0.189 84.429);
+  --color-chart-5: oklch(0.769 0.188 70.08);
+
+  /* Accent purple (for text-primary) */
+  --color-purple-accent: oklch(59.62% 0.2165 306.18);
+
+  /* Menu green */
+  --color-menu-green: oklch(42.938% 0.02602 153.5);
+
+  /* Surface-specific colors */
+  --color-surface-input-base: oklch(100% 0.00011 271.152);
+  --color-background-light: oklch(98.233% 0.00275 84.299);
+
+  /* Shimmer effect color */
+
+  /* Gray scale (with slight hue) - legacy compatibility */
+  --color-gray-75: oklch(97.1% 0.01 0);
+
+  /* Purple accent scale */
+
+  --text-xs: 0.81rem;
+  --text-sm: 0.89rem;
+
+  /* Dialog/Modal shadows - macOS style */
+  --shadow-dialog:
+    0 28px 90px -55px rgba(0, 0, 0, 0.6), 0 10px 28px -18px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --shadow-dialog-dark:
+    0 36px 120px -70px rgba(0, 0, 0, 0.9), 0 14px 34px -22px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Component size tokens */
+  --height-button-cta: 3.25rem;
+}
+
+/* Surface Hierarchy & Design Tokens */
+:root {
+
+  --text-primary: var(--color-purple-accent);
+  /* --primary: oklch(0.42 0.03 165.23); */
+
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
+  --ring: var(--color-neutral-300);
+  --chart-1: var(--color-chart-1);
+  --chart-2: var(--color-chart-2);
+  --chart-3: var(--color-chart-3);
+  --chart-4: var(--color-chart-4);
+  --chart-5: var(--color-chart-5);
+  --radius: 0.5rem;
+  --sidebar-border: var(--color-bark-50);
+
+  --breakpoint-md: 768px;
+
+  /* LIGHT MODE - Corrected hierarchy */
+
+  /* Background - Base canvas */
+  --background: var(--color-background-light);
+  --foreground: var(--color-bark-800);
+
+  /* Surface Levels - Fixed hierarchy */
+
+  /* Input surfaces (brightest) - white or near-white */
+  --surface-input: var(--color-surface-input-base);
+
+  /* Raised surfaces (brighter than background) */
+  --surface-raised: var(--color-sand-100);
+  --surface-raised-high: var(--color-sand-50);
+
+  /* Default surface - same as background */
+  --surface-default: var(--color-sand-200);
+
+  /* Component surface - slightly darker than card for nested elements */
+
+  /* Group avatar SVG color - dark lavender for mascot/fallback icons */
+
+  /* Dashboard card border */
+
+  /* Dashboard title color */
+  --dashboard-title: var(--color-bark-800);
+
+  /* Section title color */
+
+  /* Navigation surfaces (slightly darker than background) */
+
+  /* Special accent surfaces */
+
+  /* Table surfaces */
+
+  /* shadcn/ui required tokens - updated */
+
+  --primary: var(--color-bark-700);
+  --primary-foreground: var(--color-sand-50);
+
+  --secondary: var(--color-sand-300);
+
+  --toolbar-control: var(--color-bark-300);
+  --toolbar-control-foreground: transparent;
+
+  --muted-foreground: var(--color-bark-300);
+
+  --accent: var(--color-lavender-300);
+
+  --destructive: var(--color-danger-500);
+
+  --border: var(--color-bark-50);
+  --input: var(--surface-input); /* Brightest surface */
+  --ring: var(--primary);
+
+  /* Sidebar specific tokens */
+
+  /* ========================================
+     CHIP COMPONENT TOKENS
+     ======================================== */
+
+  /* ========================================
+     ICON BUTTON TOKENS
+     ======================================== */
+  --icon-button-bg: var(--color-sand-200);
+  --icon-button-fg: var(--color-bark-400);
+  --icon-button-fg-hover: var(--color-bark-600);
+
+  /* ========================================
+     BUTTON HOVER TOKENS (non-primary variants)
+     ======================================== */
+  --button-hover-bg: var(--color-sand-300);
+  --button-hover-foreground: var(--foreground);
+
+  /* ========================================
+     INTERACTIVE STATE TOKENS
+     ======================================== */
+
+  /* Hover - Light lavender, dark text (INDEPENDENT from active) */
+
+  /* Active/Selected - Deep lavender, white text */
+  --interactive-active: var(--color-lavender-500);
+  --interactive-active-foreground: var(--color-sand-50);
+
+  /* Focus ring */
+
+  /* Pressed state (mouse down) */
+
+  /* Group header hover - text only, no background */
+
+  /* Linked list component tokens */
+
+  /* Toaster surface tokens */
+
+  --radius: 0.5rem;
+}
+
+/* DARK MODE */
+.dark {
+  /* Inverted hierarchy for dark mode */
+  --background: var(--color-bark-900);
+  --foreground: var(--color-sand-200);
+
+  /* Surface hierarchy in dark mode */
+  --surface-raised-high: var(--color-bark-600);
+  --surface-raised: var(--color-bark-700);
+  --surface-default: var(--color-bark-800);
+  --surface-sunken-deep: var(--color-bark-950);
+
+  /* Component surface - dark mode */
+
+  /* Group avatar SVG color - dark mode */
+
+  /* Dashboard card border - dark mode */
+
+  /* Dashboard title color - dark mode */
+  --dashboard-title: var(--color-bark-300);
+
+  /* Section title color - dark mode */
+
+  /* Muted pastel accents for dark mode */
+
+  /* Navigation in dark */
+
+  /* Table surfaces */
+
+  /* Adjusted tokens for dark mode */
+
+  --primary: var(--color-sand-300);
+  --primary-foreground: var(--color-bark-800);
+
+  --secondary: var(--color-bark-600);
+
+  --toolbar-control: var(--color-sand-600);
+  --toolbar-control-foreground: transparent;
+
+  --muted-foreground: var(--color-sand-600);
+
+  --accent: var(--color-lavender-500);
+
+  --border: var(--color-bark-600);
+  --input: var(--surface-raised);
+  --ring: var(--primary);
+
+  /* Chip component tokens - dark mode */
+
+  /* Icon button tokens - dark mode */
+  --icon-button-bg: var(--color-bark-700);
+  --icon-button-fg: var(--color-sand-400);
+  --icon-button-fg-hover: var(--color-sand-200);
+
+  /* Button hover tokens - dark mode */
+  --button-hover-bg: var(--color-bark-600);
+  --button-hover-foreground: var(--foreground);
+
+  /* Interactive state tokens - dark mode */
+  --interactive-active: var(--color-lavender-600);
+  --interactive-active-foreground: var(--color-lavender-50);
+
+  /* Linked list component tokens - dark mode */
+
+  /* Toaster surface tokens - dark mode */
+}
+
+html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
+
+@font-face {
+  font-family: 'LibreFranklin';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local(''),
+    url('/fonts/LibreFranklin-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'LilitaOne';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local(''),
+    url('/fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+:root {
+  /* ========================================
+     PUBLIC PAGE TOKENS
+     ======================================== */
+
+  /* === Tier 2: Semantic Tokens === */
+
+  /* Page backgrounds - matches dashboard */
+  --public-bg-page: var(--background);
+  --public-bg-section-alt: var(--surface-default);
+
+  /* Typography */
+  --public-text-heading: var(--color-bark-800);
+  --public-text-body: var(--color-bark-600);
+  --public-text-muted: var(--color-bark-400);
+  --public-text-link: var(--color-sage-700);
+  --public-text-link-hover: var(--color-sage-900);
+
+  /* Accent colors */
+
+  /* Icon backgrounds for contact info */
+
+  /* Emergency/Danger (muted terracotta) */
+
+  /* Status indicators */
+
+  /* Today highlight (schedule) */
+
+  /* === Tier 3: Component Tokens === */
+
+  /* Public Navigation */
+
+  /* Public Footer */
+  --public-footer-divider: var(--color-sand-300);
+
+  /* Public Hero */
+  --public-hero-bg: var(--color-sand-200);
+
+  /* Public Form (newsletter) */
+
+  /* Selected/Active state */
+
+  /* === Landing Page Component Tokens === */
+
+  /* Landing Navigation — subtle white tint matching the modal/dialog overlay
+     (bg-white/10 + 12px blur), so the scrolled nav frosts the content cleanly
+     instead of washing it with color. */
+  --public-landing-nav-bg-scrolled: oklch(1 0 0 / 0.1);
+
+  /* Landing Hero */
+  --public-landing-hero-bg: var(--color-sand-200);
+  --public-landing-hero-subtitle: var(--color-bark-500);
+
+  /* Landing Intro (lavender section below hero) */
+
+  /* Landing Feature Sections */
+  --public-landing-feature-bg: var(--color-sand-50);
+  --public-landing-feature-bg-alt: var(--color-lavender-50);
+  --public-landing-feature-title: var(--color-bark-800);
+  --public-landing-feature-body: var(--color-bark-500);
+
+  /* Landing Safety/Sicherheit — soft sand-200 theme */
+
+  /* Landing Audience Selector */
+
+  /* Landing Team — brighter warm-brown theme with fully white text */
+  /* Warm garden-bed decoration (base stays bark-100; copy is dark bark-800) */
+
+  /* Landing Feature Board — lavender/white theme (matches intro) */
+
+  /* Landing Feature Board — category gradients (distinct tint per category) */
+
+  /* Landing Footer */
+  /* Landing Link Card */
+
+  /* Landing Link Card — Login (green/sage variant) */
+
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-menu: var(--primary-menu);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-toolbar-control: var(--toolbar-control);
+  --color-toolbar-control-foreground: var(--toolbar-control-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 2rem;
+  --radius-xl: 2.5rem;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-badge-default: var(--badge-default);
+
+  /* Chip component colors */
+  --color-chip-active-bg: var(--chip-active-bg);
+  --color-chip-active-fg: var(--chip-active-fg);
+  --color-chip-active-border: var(--chip-active-border);
+
+  /* Ampel (traffic light) colors */
+  --color-ampel-green: var(--color-traffic-good);
+  --color-ampel-orange: var(--color-traffic-warning);
+  --color-ampel-red: var(--color-traffic-critical);
+
+  /* Entity status colors */
+  --color-entity-active: var(--color-entity-active);
+  --color-entity-planned: var(--color-entity-planned);
+  --color-entity-pending: var(--color-entity-pending);
+  --color-entity-completed: var(--color-entity-completed);
+  --color-entity-cancelled: var(--color-entity-cancelled);
+  --color-entity-inactive: var(--color-entity-inactive);
+
+  /* Linked list component colors */
+  --color-linked-list-title-hover: var(--linked-list-title-hover);
+  --color-linked-list-item-hover: var(--linked-list-item-hover);
+
+  /* Public page tokens */
+  --color-public-bg-page: var(--public-bg-page);
+  --color-public-bg-section: var(--public-bg-section);
+  --color-public-bg-section-alt: var(--public-bg-section-alt);
+  --color-public-text-heading: var(--public-text-heading);
+  --color-public-text-body: var(--public-text-body);
+  --color-public-text-muted: var(--public-text-muted);
+  --color-public-text-link: var(--public-text-link);
+  --color-public-text-link-hover: var(--public-text-link-hover);
+  --color-public-accent-primary: var(--public-accent-primary);
+  --color-public-accent-secondary: var(--public-accent-secondary);
+  --color-public-icon-phone-bg: var(--public-icon-phone-bg);
+  --color-public-icon-phone-fg: var(--public-icon-phone-fg);
+  --color-public-icon-email-bg: var(--public-icon-email-bg);
+  --color-public-icon-email-fg: var(--public-icon-email-fg);
+  --color-public-icon-web-bg: var(--public-icon-web-bg);
+  --color-public-icon-web-fg: var(--public-icon-web-fg);
+  --color-public-icon-location-bg: var(--public-icon-location-bg);
+  --color-public-icon-location-fg: var(--public-icon-location-fg);
+  --color-public-danger-bg: var(--public-danger-bg);
+  --color-public-danger-border: var(--public-danger-border);
+  --color-public-danger-text: var(--public-danger-text);
+  --color-public-danger-text-muted: var(--public-danger-text-muted);
+  --color-public-status-open-bg: var(--public-status-open-bg);
+  --color-public-status-open-text: var(--public-status-open-text);
+  --color-public-status-closed-bg: var(--public-status-closed-bg);
+  --color-public-status-closed-text: var(--public-status-closed-text);
+  --color-public-highlight-bg: var(--public-highlight-bg);
+  --color-public-highlight-border: var(--public-highlight-border);
+  --color-public-highlight-text: var(--public-highlight-text);
+  --color-public-highlight-text-muted: var(--public-highlight-text-muted);
+  --color-public-nav-bg: var(--public-nav-bg);
+  --color-public-nav-text: var(--public-nav-text);
+  --color-public-nav-text-hover: var(--public-nav-text-hover);
+  --color-public-nav-button-bg: var(--public-nav-button-bg);
+  --color-public-nav-button-hover: var(--public-nav-button-hover);
+  --color-public-footer-bg: var(--public-footer-bg);
+  --color-public-footer-text: var(--public-footer-text);
+  --color-public-footer-text-muted: var(--public-footer-text-muted);
+  --color-public-footer-link-hover: var(--public-footer-link-hover);
+  --color-public-footer-divider: var(--public-footer-divider);
+  --color-public-hero-bg: var(--public-hero-bg);
+  --color-public-hero-text: var(--public-hero-text);
+  --color-public-input-border: var(--public-input-border);
+  --color-public-input-focus-ring: var(--public-input-focus-ring);
+  --color-public-button-primary-bg: var(--public-button-primary-bg);
+  --color-public-button-primary-hover: var(--public-button-primary-hover);
+  --color-public-button-primary-text: var(--public-button-primary-text);
+  --color-public-selected-bg: var(--public-selected-bg);
+
+  /* Landing component tokens */
+  --color-public-landing-nav-bg-scrolled: var(--public-landing-nav-bg-scrolled);
+  --color-public-landing-nav-text-scrolled: var(--public-landing-nav-text-scrolled);
+  --color-public-landing-nav-shadow: var(--public-landing-nav-shadow);
+  --color-public-landing-hero-bg: var(--public-landing-hero-bg);
+  --color-public-landing-hero-title: var(--public-landing-hero-title);
+  --color-public-landing-hero-subtitle: var(--public-landing-hero-subtitle);
+  --color-public-landing-hero-link: var(--public-landing-hero-link);
+  --color-public-landing-hero-link-hover: var(--public-landing-hero-link-hover);
+  --color-public-landing-hero-link-border: var(--public-landing-hero-link-border);
+  --color-public-landing-hero-cta-bg: var(--public-landing-hero-cta-bg);
+  --color-public-landing-hero-cta-hover: var(--public-landing-hero-cta-hover);
+  --color-public-landing-hero-cta-text: var(--public-landing-hero-cta-text);
+  --color-public-landing-hero-cta2-text: var(--public-landing-hero-cta2-text);
+  --color-public-landing-hero-cta2-border: var(--public-landing-hero-cta2-border);
+  --color-public-landing-hero-cta2-hover: var(--public-landing-hero-cta2-hover);
+  --color-public-landing-intro-bg: var(--public-landing-intro-bg);
+  --color-public-landing-intro-title: var(--public-landing-intro-title);
+  --color-public-landing-intro-body: var(--public-landing-intro-body);
+  --color-public-landing-intro-link: var(--public-landing-intro-link);
+  --color-public-landing-intro-link-hover: var(--public-landing-intro-link-hover);
+  --color-public-landing-intro-nav-border: var(--public-landing-intro-nav-border);
+  --color-public-landing-intro-nav-bg: var(--public-landing-intro-nav-bg);
+  --color-public-landing-intro-nav-text: var(--public-landing-intro-nav-text);
+  --color-public-landing-intro-nav-hover-bg: var(--public-landing-intro-nav-hover-bg);
+  --color-public-landing-intro-nav-hover-text: var(--public-landing-intro-nav-hover-text);
+  --color-public-landing-feature-bg: var(--public-landing-feature-bg);
+  --color-public-landing-feature-bg-alt: var(--public-landing-feature-bg-alt);
+  --color-public-landing-feature-overline: var(--public-landing-feature-overline);
+  --color-public-landing-feature-title: var(--public-landing-feature-title);
+  --color-public-landing-feature-body: var(--public-landing-feature-body);
+  --color-public-landing-feature-sub-title: var(--public-landing-feature-sub-title);
+  --color-public-landing-feature-sub-body: var(--public-landing-feature-sub-body);
+  --color-public-landing-feature-border: var(--public-landing-feature-border);
+  --color-public-landing-feature-media-border: var(--public-landing-feature-media-border);
+  --shadow-public-landing-feature-media: var(--public-landing-feature-media-shadow);
+  --color-public-landing-feature-placeholder-bg: var(--public-landing-feature-placeholder-bg);
+  --color-public-landing-feature-placeholder-border: var(
+    --public-landing-feature-placeholder-border
+  );
+  --color-public-landing-safety-bg: var(--public-landing-safety-bg);
+  --color-public-landing-safety-title: var(--public-landing-safety-title);
+  --color-public-landing-safety-body: var(--public-landing-safety-body);
+  --color-public-landing-safety-icon: var(--public-landing-safety-icon);
+  --color-public-landing-safety-icon-bg: var(--public-landing-safety-icon-bg);
+  --color-public-landing-safety-point-title: var(--public-landing-safety-point-title);
+  --color-public-landing-safety-hover-sage: var(--public-landing-safety-hover-sage);
+  --color-public-landing-safety-hover-sage-icon: var(--public-landing-safety-hover-sage-icon);
+  --color-public-landing-safety-hover-lavender: var(--public-landing-safety-hover-lavender);
+  --color-public-landing-safety-hover-lavender-icon: var(
+    --public-landing-safety-hover-lavender-icon
+  );
+  --color-public-landing-safety-hover-peach: var(--public-landing-safety-hover-peach);
+  --color-public-landing-safety-hover-peach-icon: var(--public-landing-safety-hover-peach-icon);
+  --color-public-landing-audience-bg: var(--public-landing-audience-bg);
+  --color-public-landing-audience-title: var(--public-landing-audience-title);
+  --color-public-landing-audience-subtitle: var(--public-landing-audience-subtitle);
+  --color-public-landing-audience-option-title: var(--public-landing-audience-option-title);
+  --color-public-landing-audience-option-title-hover: var(
+    --public-landing-audience-option-title-hover
+  );
+  --color-public-landing-audience-option-desc: var(--public-landing-audience-option-desc);
+  --color-public-landing-audience-option-border: var(--public-landing-audience-option-border);
+  --color-public-landing-audience-option-arrow: var(--public-landing-audience-option-arrow);
+  --color-public-landing-audience-option-arrow-hover: var(
+    --public-landing-audience-option-arrow-hover
+  );
+  --color-public-landing-audience-center-accent: var(--public-landing-audience-center-accent);
+  --color-public-landing-audience-org-accent: var(--public-landing-audience-org-accent);
+  --color-public-landing-audience-parent-accent: var(--public-landing-audience-parent-accent);
+  --color-public-landing-team-bg: var(--public-landing-team-bg);
+  --color-public-landing-team-title: var(--public-landing-team-title);
+  --color-public-landing-team-body: var(--public-landing-team-body);
+  --color-public-landing-team-quote: var(--public-landing-team-quote);
+  --color-public-landing-team-quote-border: var(--public-landing-team-quote-border);
+  --color-public-landing-link-card-border: var(--public-landing-link-card-border);
+  --color-public-landing-link-card-border-hover: var(--public-landing-link-card-border-hover);
+  --color-public-landing-link-card-bg: var(--public-landing-link-card-bg);
+  --color-public-landing-link-card-text: var(--public-landing-link-card-text);
+  --color-public-landing-link-card-text-hover: var(--public-landing-link-card-text-hover);
+  --color-public-landing-link-card-arrow: var(--public-landing-link-card-arrow);
+  --color-public-landing-link-card-arrow-hover: var(--public-landing-link-card-arrow-hover);
+  --color-public-landing-link-card-login-border: var(--public-landing-link-card-login-border);
+  --color-public-landing-link-card-login-border-hover: var(
+    --public-landing-link-card-login-border-hover
+  );
+  --color-public-landing-link-card-login-bg: var(--public-landing-link-card-login-bg);
+  --color-public-landing-link-card-login-text: var(--public-landing-link-card-login-text);
+  --color-public-landing-link-card-login-text-hover: var(
+    --public-landing-link-card-login-text-hover
+  );
+  --color-public-landing-link-card-login-arrow: var(--public-landing-link-card-login-arrow);
+  --color-public-landing-link-card-login-arrow-hover: var(
+    --public-landing-link-card-login-arrow-hover
+  );
+  --color-public-landing-footer-bg: var(--public-landing-footer-bg);
+  --color-public-landing-footer-border: var(--public-landing-footer-border);
+  --color-public-landing-footer-text: var(--public-landing-footer-text);
+  --color-public-landing-footer-link-hover: var(--public-landing-footer-link-hover);
+  --color-public-landing-board-bg: var(--public-landing-board-bg);
+  --color-public-landing-board-border: var(--public-landing-board-border);
+  --color-public-landing-board-title: var(--public-landing-board-title);
+  --color-public-landing-board-desc: var(--public-landing-board-desc);
+  --color-public-landing-board-active-from: var(--public-landing-board-active-from);
+  --color-public-landing-board-active-via: var(--public-landing-board-active-via);
+  --color-public-landing-board-active-to: var(--public-landing-board-active-to);
+  --color-public-landing-board-title-active: var(--public-landing-board-title-active);
+  --color-public-landing-board-desc-active: var(--public-landing-board-desc-active);
+  --color-public-landing-board-section-title: var(--public-landing-board-section-title);
+
+  /* Component surface */
+  --color-surface-component: var(--surface-component);
+
+  /* Group avatar */
+  --color-group-avatar-bg: var(--group-avatar-bg);
+
+  /* Dashboard card border */
+  --color-dashboard-card-border: var(--dashboard-card-border);
+
+  /* Table surfaces */
+  --color-surface-table-header: var(--surface-table-header);
+
+  /* Workflow Node Colors */
+  --color-workflow-node-default-bg: var(--workflow-node-default-bg);
+  --color-workflow-node-default-border: var(--workflow-node-default-border);
+  --color-workflow-node-default-text: var(--workflow-node-default-text);
+  --color-workflow-node-ai-bg: var(--workflow-node-ai-bg);
+  --color-workflow-node-ai-border: var(--workflow-node-ai-border);
+  --color-workflow-node-ai-text: var(--workflow-node-ai-text);
+  --color-workflow-node-trigger-bg: var(--workflow-node-trigger-bg);
+  --color-workflow-node-trigger-border: var(--workflow-node-trigger-border);
+  --color-workflow-node-trigger-text: var(--workflow-node-trigger-text);
+
+  /* Interactive state colors */
+  --color-interactive-hover: var(--interactive-hover);
+  --color-interactive-hover-foreground: var(--interactive-hover-foreground);
+  --color-interactive-active: var(--interactive-active);
+  --color-interactive-active-foreground: var(--interactive-active-foreground);
+  --color-interactive-focus-ring: var(--interactive-focus-ring);
+  --color-interactive-pressed: var(--interactive-pressed);
+  --color-interactive-pressed-foreground: var(--interactive-pressed-foreground);
+
+  /* Toaster colors */
+  --color-toaster-bg: var(--toaster-bg);
+  --color-toaster-foreground: var(--toaster-foreground);
+  --color-toaster-border: var(--toaster-border);
+
+  /* Icon button colors */
+  --color-icon-button-bg: var(--icon-button-bg);
+  --color-icon-button-bg-hover: var(--icon-button-bg-hover);
+  --color-icon-button-fg: var(--icon-button-fg);
+  --color-icon-button-fg-hover: var(--icon-button-fg-hover);
+
+  /* Button hover colors */
+  --color-button-hover-bg: var(--button-hover-bg);
+  --color-button-hover-foreground: var(--button-hover-foreground);
+
+  /* Traffic light colors (Ampel) - for status indicators */
+  --color-traffic-good: var(--color-ratio-good);
+  --color-traffic-good-muted: var(--color-ratio-good-muted);
+  --color-traffic-warning: var(--color-ratio-warning);
+  --color-traffic-warning-muted: var(--color-ratio-warning-muted);
+  --color-traffic-critical: var(--color-ratio-critical);
+  --color-traffic-critical-muted: var(--color-ratio-critical-muted);
+  --color-traffic-empty: var(--color-ratio-empty);
+
+  /* Dashboard layout tokens */
+  --dashboard-content-padding-big: calc(var(--dashboard-content-padding) * 1.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Links always show the pointer cursor and give a subtle hover feedback.
+     (Tailwind v4 preflight no longer forces pointer on interactive elements.)
+     Component-level hover styles still win — this is just the baseline. */
+  a {
+    cursor: pointer;
+    transition: opacity 0.15s ease-in-out;
+  }
+  a:hover {
+    opacity: 0.85;
+  }
+}
+
+@layer components {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Geist';
+    font-optical-sizing: auto;
+    /* Titles opt out of the global auto-hyphenation + balanced wrapping. */
+    hyphens: manual;
+    text-wrap: wrap;
+  }
+
+  body {
+    font-family: 'Geist';
+    font-weight: 300;
+    /* Auto-hyphenate and balance-wrap all non-title text app-wide (inherited;
+       titles reset above, div-based title utilities reset below). */
+    hyphens: auto;
+    text-wrap: balance;
+  }
+
+  .border-gray-75 {
+    border-color: var(--color-gray-75);
+  }
+
+  .semi-bold {
+    font-weight: 500;
+  }
+
+  .font-medium {
+    font-family: 'Geist';
+    letter-spacing: 0.02em;
+  }
+
+  .font-base {
+    letter-spacing: 0.02em;
+  }
+
+  .border-sidebar {
+    border-color: var(--sidebar-border);
+  }
+
+  /* Sidebar SVG icons inherit text color */
+  [data-sidebar='menu-button'] svg {
+    color: currentColor;
+  }
+
+  .appHeader {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--background);
+  }
+
+  /* Fade below - hidden by default, appears on scroll */
+  .appHeader::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1rem;
+    transform: translateY(100%);
+    background: linear-gradient(to bottom, var(--background), transparent);
+    pointer-events: none;
+    opacity: 0;
+    animation: headerFade 1ms linear both;
+    animation-timeline: scroll();
+    animation-range: 0px 2rem;
+  }
+
+  @keyframes headerFade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Public pages scroll the document — declare the same timeline at the root so the
+   global scroll-to-top animation works there too. `.public-scroll-root` is the marker
+   on the lang-layout button, covering every public page (not only `.landing-page`). */
+html:has(.landing-page),
+html:has(.public-scroll-root) {
+  scroll-timeline: --main-scroll block;
+  timeline-scope: --bottom-fade;
+}
+
+/* Global scroll-to-top button (fixed, bottom-right). Reveals after scrolling,
+   then fades OUT as the footer enters — a matching button (.footer-scroll-top)
+   fades in just above the footer, so it reads as one button moving to a new
+   place. A fixed element can't sit "above the footer" itself (it's anchored to
+   the viewport), hence the handoff to a footer-anchored twin. */
+.global-scroll-top {
+  opacity: 0;
+  pointer-events: none;
+  animation: scroll-top-show 1ms linear both;
+  animation-timeline: --main-scroll;
+  animation-range: 200px 300px;
+}
+
+/* Inner round button owns the footer fade-out so its opacity multiplies with
+   the outer reveal gate (one element can't run two opacity animations on two
+   timelines). Fades out over the first half of the footer entering. */
+.global-scroll-top-inner {
+  animation: scroll-top-fade-out 1ms linear both;
+  animation-timeline: --bottom-fade;
+  animation-range: entry 0% entry 50%;
+}
+
+@keyframes scroll-top-show {
+  from {
+    opacity: 0;
+    scale: 0.8;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    pointer-events: auto;
+  }
+}
+
+@keyframes scroll-top-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* Centred scroll-to-top button, parked just above the footer (absolute, anchored
+   to .landing-footer). Fades in over the SECOND half of the footer entering —
+   after the fixed one has fully faded out — so the two never overlap. */
+.footer-scroll-top {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  translate: -50% -1.5rem;
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  animation: footer-scroll-top-in 1ms linear both;
+  animation-timeline: --bottom-fade;
+  animation-range: entry 50% entry 100%;
+}
+
+@keyframes footer-scroll-top-in {
+  from {
+    opacity: 0;
+    scale: 0.8;
+    pointer-events: none;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Fallback for browsers without scroll-driven animations */
+@supports not (animation-timeline: scroll()) {
+  .global-scroll-top,
+  .footer-scroll-top {
+    display: none;
+  }
+}
+
+/* Responsive dashboard content padding token */
+:root {
+}
+
+:root {
+  --tile-pill-indent: calc(var(--spacing) * 2.5);
+}
+
+@utility text-dashboard-title {
+  color: var(--dashboard-title);
+  font-weight: 300;
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height, 2.25rem);
+  letter-spacing: var(--tracking-tight);
+  /* Title — opt out of global auto-hyphenation + balanced wrapping. */
+  hyphens: manual;
+  text-wrap: wrap;
+
+  @media (width >= 768px) {
+    font-size: var(--text-5xl);
+    line-height: var(--text-5xl--line-height, 1);
+  }
+}
+
+@utility section-title-gap {
+  margin-bottom: clamp(1rem, 4vw, 2.5rem);
+}
+
+.detail-tab-active-indicator::before,
+.detail-tab-hover-indicator:hover::before {
+  content: '';
+  position: absolute;
+  inset: -0.25rem -0.5rem;
+  -webkit-mask-image: url('/tab-indicator.svg');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('/tab-indicator.svg');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (min-width: theme(--breakpoint-md)) {
+  .md\:w-header-logo {
+    width: calc(16rem + (var(--spacing) * 6));
+  }
+  .md\:ml-header-logo {
+    margin-left: calc(var(--spacing) * 1);
+  }
+  .md\:pt-navigation {
+    padding-top: calc(var(--spacing) * 22);
+  }
+  .md\:h-navigation {
+    height: calc(var(--spacing) * 22);
+  }
+}
+
+/* ============================================
+   GUIDE BANNER - Onboarding/Tour Banner
+   ============================================ */
+
+:root {
+}
+
+.dark {
+}
+
+.dark .task-card-overdue {
+  border-color: var(--color-ratio-critical);
+}
+
+/* Per-group frosted pill behind each nav cluster (logo, action group, back
+   button). An absolute halo around its group, so it never affects layout or
+   element sizes. Invisible by default; eases in (opacity) as the page scrolls,
+   keeping the logo + buttons legible over content, on mobile and desktop alike
+   (see the scroll-in animation below). The halo size is set per call site with
+   negative -inset-* utilities so each cluster gets a fitting shape. */
+.landing-nav-pill {
+  position: absolute;
+  z-index: -10; /* paint behind the group's in-flow controls */
+  border-radius: 9999px; /* pill (fallback shape where mask is unsupported) */
+  opacity: 0;
+  background: var(--public-landing-nav-bg-scrolled);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* Soft fade-out: the frost (blur + tint) holds in the centre and dissolves
+     toward every edge through an elliptical mask, so it has no clear rim and
+     melts into the page instead of ending on a line. The big, even halo set per
+     call site gives the fade room to breathe. */
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+}
+
+/* Scroll-driven ease-in of the nav pill blur, on all viewport widths. */
+@supports (animation-timeline: scroll()) {
+  .landing-nav-pill {
+    animation: landing-nav-bg-in linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 14vh;
+  }
+}
+
+@keyframes landing-nav-bg-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Logo shrinks smoothly as the page is scrolled (pure CSS, scroll-driven).
+   Unsupported browsers fall back to the static Tailwind width. */
+@keyframes landing-logo-shrink {
+  from {
+    width: clamp(6rem, 12vw, 11rem);
+  }
+  to {
+    width: clamp(3.5rem, 7vw, 6rem);
+  }
+}
+/* Eases lavender→white over a short ramp at each end of the active range, then
+   holds white in between; outside the range the natural color shows because
+   animation-fill-mode defaults to none. */
+@keyframes landing-logo-white {
+  0% {
+    color: var(--color-lavender-500);
+  }
+  8%,
+  92% {
+    color: white;
+  }
+  100% {
+    color: var(--color-lavender-500);
+  }
+}
+@keyframes landing-login-white {
+  from,
+  to {
+    color: white;
+  }
+}
+
+/* Trial badge (left): driven by the LandingIntro section's view progress, but
+   paired with `animation-range: 0 120vh` so keyframe % maps to the badge's own
+   vertical position (keyframe k% → badge ~(100 − k·1.2)vh from the top). Same
+   viewport-relative roll as mobile — rolls in low near the bottom, rests, rolls
+   out near the top — except desktop lets the final fling carry the badge ~20vh
+   past the top edge (the roll-out needn't complete within the viewport).
+   - Roll-in done by 25% (badge ~70vh from top — low, near the bottom).
+   - Roll-out from 70% (badge ~16vh from top) flinging off-screen RIGHT,
+     completing at 100% with the badge ~20vh above the viewport top. */
+@keyframes trial-badge-roll-x {
+  0% {
+    transform: translate(-160%, -50%);
+  }
+  25% {
+    transform: translate(0, -50%);
+  }
+  70% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(100vw, -50%);
+  }
+}
+@keyframes trial-badge-roll-rotate {
+  0% {
+    rotate: -732deg;
+  }
+  25% {
+    rotate: -12deg;
+  }
+  70% {
+    rotate: -12deg;
+  }
+  100% {
+    rotate: 1428deg;
+  }
+}
+
+/* Trial badge (right): mirror of the left badge, driven by the Team section's
+   view progress (anchored just above it), same `animation-range: 0 120vh`.
+   - Roll-in done by 25% (badge ~70vh from top), rolling in from the right.
+   - Roll-out from 70% (badge ~16vh from top) flinging off-screen LEFT,
+     completing ~20vh above the viewport top. */
+@keyframes trial-badge-roll-x-right {
+  0% {
+    transform: translate(160%, -50%);
+  }
+  25% {
+    transform: translate(0, -50%);
+  }
+  70% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(-100vw, -50%);
+  }
+}
+@keyframes trial-badge-roll-rotate-right {
+  0% {
+    rotate: 732deg;
+  }
+  25% {
+    rotate: 12deg;
+  }
+  70% {
+    rotate: 12deg;
+  }
+  100% {
+    rotate: -1428deg;
+  }
+}
+@keyframes trial-badge-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Mobile roll keyframes — paired with `animation-range: 0 100vh`, so keyframe %
+   maps directly to the badge's vertical position: keyframe k% → badge ~(100−k)vh
+   from the top (0% = entering at the viewport bottom, 100% = at the viewport top).
+   Roll-in is done by 30% (badge ~70vh from the top — low and quick), rests through
+   the middle, then rolls out from 85% (badge ~15vh from the top) up to the top. */
+@keyframes trial-badge-roll-x-mobile {
+  0% {
+    transform: translate(-160%, -50%);
+  }
+  30% {
+    transform: translate(0, -50%);
+  }
+  85% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(100vw, -50%);
+  }
+}
+@keyframes trial-badge-roll-rotate-mobile {
+  0% {
+    rotate: -732deg;
+  }
+  30% {
+    rotate: -12deg;
+  }
+  85% {
+    rotate: -12deg;
+  }
+  100% {
+    rotate: 708deg;
+  }
+}
+@keyframes trial-badge-roll-x-right-mobile {
+  0% {
+    transform: translate(160%, -50%);
+  }
+  30% {
+    transform: translate(0, -50%);
+  }
+  85% {
+    transform: translate(0, -50%);
+  }
+  100% {
+    transform: translate(-100vw, -50%);
+  }
+}
+@keyframes trial-badge-roll-rotate-right-mobile {
+  0% {
+    rotate: 732deg;
+  }
+  30% {
+    rotate: 12deg;
+  }
+  85% {
+    rotate: 12deg;
+  }
+  100% {
+    rotate: -708deg;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .landing-page {
+    timeline-scope:
+      --landing-intro-view, --landing-trial-view, --landing-board-view, --landing-team-view;
+  }
+  .landing-intro-view-source {
+    view-timeline: --landing-intro-view block;
+  }
+  .landing-trial-view-source {
+    view-timeline: --landing-trial-view block;
+  }
+  .landing-board-view-source {
+    view-timeline: --landing-board-view block;
+  }
+  .landing-team-view-source {
+    view-timeline: --landing-team-view block;
+  }
+  .trial-badge-roll {
+    animation: trial-badge-roll-x linear both;
+    animation-timeline: --landing-intro-view;
+    animation-range: 0 120vh;
+  }
+  .trial-badge-spin {
+    animation: trial-badge-roll-rotate linear both;
+    animation-timeline: --landing-intro-view;
+    animation-range: 0 120vh;
+  }
+  .trial-badge-roll:hover .trial-badge-star {
+    animation: trial-badge-spin 1.6s linear infinite;
+    animation-timeline: auto;
+  }
+  .trial-badge-roll-right {
+    animation: trial-badge-roll-x-right linear both;
+    animation-timeline: --landing-team-view;
+    animation-range: 0 120vh;
+  }
+  .trial-badge-spin-right {
+    animation: trial-badge-roll-rotate-right linear both;
+    animation-timeline: --landing-team-view;
+    animation-range: 0 120vh;
+  }
+  .trial-badge-roll-right:hover .trial-badge-star {
+    animation: trial-badge-spin 1.6s linear infinite;
+    animation-timeline: auto;
+  }
+  /* Mobile: same viewport-position mapping as desktop, but the range ends at
+     100vh (badge at the viewport top) so the roll-out finishes fully on screen
+     rather than flinging past the top, and tighter keyframes (roll-in done 30%,
+     out from 85%) keep the whole roll inside the smaller viewport. */
+  @media (max-width: 767px) {
+    .trial-badge-roll {
+      animation-name: trial-badge-roll-x-mobile;
+      animation-range: 0 100vh;
+    }
+    .trial-badge-spin {
+      animation-name: trial-badge-roll-rotate-mobile;
+      animation-range: 0 100vh;
+    }
+    .trial-badge-roll-right {
+      animation-name: trial-badge-roll-x-right-mobile;
+      animation-range: 0 100vh;
+    }
+    .trial-badge-spin-right {
+      animation-name: trial-badge-roll-rotate-right-mobile;
+      animation-range: 0 100vh;
+    }
+  }
+  /* Logo: width shrinks on root scroll, color flips to white only while the
+     section's top edge is above the viewport top. We use length-based ranges
+     instead of phase keywords because phase keywords like `entry 100%` mean
+     different things for tall vs short sections — for a section shorter than
+     the viewport, `entry 100%` is when the section is fully visible (bottom
+     at viewport bottom), NOT when its top reaches the viewport top. Using
+     `100vh` of timeline progress maps reliably to "section top at viewport
+     top" regardless of section height: along a view-timeline (whose scroll
+     length is section-height + viewport-height), 100vh of progress always
+     corresponds to top_edge = 0. `100%` is end-of-timeline (section gone). */
+  .landing-logo {
+    animation-name: landing-logo-shrink, landing-logo-white, landing-logo-white;
+    animation-timing-function: linear, ease-in, ease-in;
+    animation-fill-mode: both, none, none;
+    animation-timeline: scroll(root), --landing-intro-view, --landing-board-view;
+    animation-range-start: 0, 100vh, 100vh;
+    animation-range-end: 70vh, 100%, 100%;
+  }
+  /* Login button flips to white only while the team section is behind the
+     nav (top above viewport top). Length-based for the same short-vs-tall
+     reason — the team section is shorter than the viewport. */
+  .landing-nav-login {
+    animation-name: landing-login-white;
+    animation-timing-function: linear;
+    animation-fill-mode: none;
+    animation-timeline: --landing-team-view;
+    animation-range-start: 100vh;
+    animation-range-end: 100%;
+  }
+}
+
+/* Public page smooth scroll — applied to html so the actual scroll container gets it */
+html:has(.landing-page),
+html:has(.public-scroll-root) {
+  scroll-behavior: smooth;
+}
+
+/* Footer reveal: main sits below the footer in z-order.
+   The footer overlaps main via negative margin and scrolls over it. */
+.landing-page > main {
+  position: relative;
+  z-index: 0;
+  background: var(--color-sand-50);
+  padding-bottom: 6rem;
+  overflow-x: clip;
+}
+
+/* Footer scrolls above the section above it. Rounded top corners
+   animate in via scroll-driven animation as the footer enters view. */
+.landing-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: -6rem;
+  animation: landing-footer-curve linear both;
+  animation-timeline: view();
+  animation-range: entry 20% entry 70%;
+  /* Source for the scroll-to-top handoff: the button (hoisted via
+     `timeline-scope: --bottom-fade`) fades to centre as the footer enters. */
+  view-timeline: --bottom-fade block;
+}
+
+@keyframes landing-footer-curve {
+  from {
+    border-radius: 0;
+  }
+  to {
+    border-radius: 4rem 4rem 0 0;
+  }
+}
+
+/* License plan card — lavender border that fades in/out then settles to sand */
+@property --border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+

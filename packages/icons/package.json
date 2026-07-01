@@ -1,0 +1,24 @@
+{
+  "name": "@wusel-capture/icons",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Type-safe icon components (Phosphor Icons wrapper) — only the icons used by wusel-capture.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "type-check": "oxlint --type-aware --type-check --ignore-pattern='*.test.*' --ignore-pattern='*.spec.*'"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "2.1.10"
+  },
+  "devDependencies": {
+    "@wusel-capture/tsconfig": "workspace:*",
+    "@types/react": "^19.2.14"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  }
+}

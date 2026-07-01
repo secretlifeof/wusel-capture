@@ -1,0 +1,8 @@
+{
+  "extends": "@wusel-capture/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["chrome", "react", "react-dom", "vite/client"],
+    "noEmit": true
+  },
+  "include": ["src/**/*", "vite.config.ts", "scripts/**/*"]
+}

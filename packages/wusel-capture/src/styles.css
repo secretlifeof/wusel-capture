@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+
+/* Shared Wusel design tokens (colors, radii, fonts, shadows). Single source of
+   truth lives in the local @wusel-capture/tailwind-config package; we reuse it
+   verbatim so the extension looks identical to the app. */
+@import '@wusel-capture/tailwind-config/theme.css';
+
+/* Content detection roots: this app's components + the root HTML entry files,
+   plus the local icons package (for the directional icons' `rtl:-scale-x-100`). */
+@source './**/*.{ts,tsx}';
+@source '../*.html';
+@source '../../icons/src/**/*.{ts,tsx}';
+
+/* Geist is bundled locally — the extension Content-Security-Policy blocks
+   remote font/script loads, so we cannot use Google Fonts here. */
+@font-face {
+	font-family: 'Geist';
+	src: url('/fonts/Geist.ttf') format('truetype-variations');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-weight: 300;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+/* The extension only ships the light appearance (matches the app default). */

@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/app" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/icons" },
+    { "path": "./packages/wusel-capture" },
+    { "path": "./packages/wusel-capture-host" }
+  ]
+}

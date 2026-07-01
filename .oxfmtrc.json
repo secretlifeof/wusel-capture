@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "sortImports": {
+    "enabled": true,
+    "groupOrder": ["builtin", "external", "internal", "parent", "sibling", "index"],
+    "newlinesBetweenGroups": "always"
+  },
+  "sortTailwindcss": {
+    "stylesheet": "./apps/app/src/app.css",
+    "functions": ["clsx", "cn"],
+    "preserveWhitespace": true
+  },
+  "sortPackageJson": {
+    "sortScripts": true
+  }
+}
