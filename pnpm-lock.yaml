@@ -192,6 +192,9 @@ importers:
         specifier: ^3.5.0
         version: 3.6.0
     devDependencies:
+      '@resvg/resvg-js':
+        specifier: ^2.6.2
+        version: 2.6.2
       '@tailwindcss/vite':
         specifier: ^4.2.2
         version: 4.3.2(vite@8.0.13(@types/node@22.20.0)(esbuild@0.27.7)(jiti@2.7.0))
