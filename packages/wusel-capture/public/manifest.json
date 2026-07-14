@@ -3,7 +3,7 @@
   "name": "Wusel Capture",
   "version": "0.1.0",
   "description": "Screenshot a page (full / viewport / region), annotate it, and send it to Claude Code (or export an annotated image + JSON context).",
-  "permissions": ["activeTab", "scripting", "tabs", "downloads", "storage", "debugger", "nativeMessaging"],
+  "permissions": ["scripting", "tabs", "downloads", "storage", "debugger", "nativeMessaging"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "service-worker.js",
@@ -24,7 +24,17 @@
       "all_frames": false
     }
   ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
   "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    },
     "default_popup": "popup.html",
     "default_title": "Wusel Capture"
   }
