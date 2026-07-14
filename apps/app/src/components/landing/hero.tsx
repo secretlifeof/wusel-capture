@@ -190,12 +190,16 @@ const EDITOR_H = 800;
 
 const noop = () => {};
 
+// Public assets are not at the server root: GitHub Pages serves the site from
+// /wusel-capture/, so a root-absolute path would 404. BASE_URL is '/' in dev.
+const heroDemo = `${import.meta.env.BASE_URL}hero-demo.png`;
+
 // Static stand-in for the capture the editor normally reads from IndexedDB.
 const DEMO_PAYLOAD: CapturePayload = {
   id: 'demo',
   capturedAt: '2026-07-01T10:24:27.000Z',
   captureMode: 'fullpage',
-  imageDataUrl: '/hero-demo.png',
+  imageDataUrl: heroDemo,
   imageWidth: 2692,
   imageHeight: 2170,
   page: {
@@ -271,7 +275,7 @@ function EditorMock() {
               <div className="flex flex-1 items-start justify-center overflow-hidden bg-sand-100 px-6 pb-6 pt-20">
                 <div className="relative h-[696px] w-[863px] shrink-0 select-none overflow-hidden rounded-sm shadow-sm">
                   <img
-                    src="/hero-demo.png"
+                    src={heroDemo}
                     alt="Screenshot of wusel.app being marked up"
                     className="block h-full w-full rounded-sm"
                     draggable={false}
