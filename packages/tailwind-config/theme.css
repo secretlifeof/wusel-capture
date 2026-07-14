@@ -181,7 +181,6 @@ body[style*='pointer-events: none'] {
 
 /* Surface Hierarchy & Design Tokens */
 :root {
-
   --text-primary: var(--color-purple-accent);
   /* --primary: oklch(0.42 0.03 165.23); */
 
@@ -371,23 +370,9 @@ body {
   }
 }
 
-@font-face {
-  font-family: 'LibreFranklin';
-  font-style: normal;
-  font-weight: 400;
-  src:
-    local(''),
-    url('/fonts/LibreFranklin-VariableFont_wght.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'LilitaOne';
-  font-style: normal;
-  font-weight: 400;
-  src:
-    local(''),
-    url('/fonts/LilitaOne-Regular.ttf') format('truetype');
-}
+/* No @font-face here: the font files live with each consumer, so each declares
+   its own face against its own path (apps/app/src/app.css, and the extension's
+   src/styles.css). This file only sets the --font-sans token. */
 
 :root {
   /* ========================================
@@ -465,7 +450,6 @@ body {
   /* Landing Link Card */
 
   /* Landing Link Card — Login (green/sage variant) */
-
 }
 
 @theme inline {
@@ -1373,4 +1357,3 @@ html:has(.public-scroll-root) {
   inherits: false;
   initial-value: 0deg;
 }
-

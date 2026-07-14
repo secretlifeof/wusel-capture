@@ -4,6 +4,27 @@
    lives in the local @wusel-capture/tailwind-config package. */
 @import '@wusel-capture/tailwind-config/theme.css';
 
+/* Fonts are self-hosted, not fetched from Google Fonts: a third-party font CDN
+   would hand every visitor's IP address to Google, which the privacy policy
+   would then have to disclose. Both are OFL-licensed (see *-OFL.txt), subset to
+   latin and shipped as variable woff2 (~106 kB total). Geist is the body face;
+   Caveat draws the hand-written note in the hero animation. */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/Geist-Variable.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/Caveat-Variable.woff2') format('woff2-variations');
+}
+
 /* Tailwind content sources: this app's own files plus the local UI + icons
    packages we render, so their utility classes (and the directional icons'
    `rtl:-scale-x-100`) get generated. Paths are relative to THIS file
@@ -115,8 +136,7 @@ html {
   background: conic-gradient(
     from -90deg,
     oklch(from var(--color-lavender-500) l c h / 0) 0deg,
-    oklch(from var(--color-lavender-500) l c h / 0)
-      max(0deg, calc(var(--wc-head) - var(--wc-len))),
+    oklch(from var(--color-lavender-500) l c h / 0) max(0deg, calc(var(--wc-head) - var(--wc-len))),
     var(--color-lavender-500) max(0deg, calc(var(--wc-head) - 18deg)),
     oklch(from var(--color-lavender-500) l c h / 0) var(--wc-head),
     transparent 360deg
@@ -348,4 +368,3 @@ html {
     opacity: 1 !important;
   }
 }
-

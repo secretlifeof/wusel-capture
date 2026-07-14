@@ -32,25 +32,11 @@ export function LegalLayout({
           </div>
         </section>
         <section className="bg-public-bg-page px-6 py-16 md:px-10 lg:px-12">
-          <div className="mx-auto max-w-3xl space-y-10">
-            <TemplateNotice />
-            {children}
-          </div>
+          <div className="mx-auto max-w-3xl space-y-10">{children}</div>
         </section>
       </main>
       <Footer />
       <ScrollToTop />
-    </div>
-  );
-}
-
-function TemplateNotice() {
-  return (
-    <div className="rounded-lg border border-lavender-300 bg-lavender-50 p-5 text-sm leading-relaxed text-public-text-body">
-      <strong className="font-semibold text-public-text-heading">Template notice.</strong> This
-      document is a starting template for Wusel Capture. Replace every{' '}
-      <code className="rounded bg-bark-900/5 px-1 font-mono text-[0.85em]">[PLACEHOLDER]</code> with
-      your real details and have it reviewed by qualified legal counsel before you publish it.
     </div>
   );
 }
@@ -102,9 +88,16 @@ export function OL({ children }: { children: ReactNode }) {
 
 export function A({ href, children }: { href: string; children: ReactNode }) {
   const external = href.startsWith('http') || href.startsWith('mailto');
+  // Root-absolute in-app hrefs like "/privacy" need the base prefix, because
+  // GitHub Pages serves the site under /wusel-capture/ rather than at the root.
+  // Same-page anchors ("#rights") and external links are left alone.
+  const internalPath = !external && href.startsWith('/');
+  const to = internalPath
+    ? `${import.meta.env.BASE_URL}${href.slice(1)}`.replace(/\/{2,}/g, '/')
+    : href;
   return (
     <a
-      href={href}
+      href={to}
       {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
       className="text-public-text-link underline underline-offset-2 transition-colors hover:text-public-text-link-hover"
     >

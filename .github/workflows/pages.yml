@@ -1,0 +1,74 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/app/**'
+      - 'packages/ui/**'
+      - 'packages/icons/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/wusel-capture/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# The site is served from https://secretlifeof.github.io/wusel-capture/, so the
+# build needs that path as its base (see apps/app/vite.config.ts).
+env:
+  BASE_PATH: /wusel-capture/
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; let an in-flight one finish rather than cancelling.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the site
+        run: pnpm --filter @wusel-capture/web build
+
+      - name: Prepare the artifact
+        run: |
+          # TanStack Start SPA mode prerenders every route to static HTML under
+          # dist/client — exactly what Pages needs, no Node server involved.
+          # .nojekyll stops Pages from skipping files that start with "_"
+          # (the prerenderer emits _shell.html).
+          touch apps/app/dist/client/.nojekyll
+          # Unknown paths fall back to the SPA shell, so client-side routing
+          # still resolves them instead of showing GitHub's default 404.
+          cp apps/app/dist/client/_shell.html apps/app/dist/client/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/app/dist/client
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

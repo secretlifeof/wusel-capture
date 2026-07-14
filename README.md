@@ -4,7 +4,9 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blueviolet.svg)](./LICENSE)
 
-**[capture.wusel.dev](https://capture.wusel.dev)** · [Report a bug](https://github.com/wusel-capture/wusel-capture/issues)
+**[secretlifeof.github.io/wusel-capture](https://secretlifeof.github.io/wusel-capture)** ·
+[Privacy](https://secretlifeof.github.io/wusel-capture/privacy) ·
+[Report a bug](https://github.com/secretlifeof/wusel-capture/issues)
 
 Wusel Capture is a Chrome extension that turns a design change into a task your AI
 coding assistant can ship. Screenshot any page — full page, viewport, or a region you
@@ -13,7 +15,10 @@ The annotated image plus the page's browser context is handed to **Claude Code**
 **Codex** in VS Code, which finds the code behind the page and implements the change.
 
 It's open source, free, and private: captures are processed locally in your browser and
-go straight to your own assistant — never to our servers.
+go straight to your own assistant — never to our servers. Note that your assistant is a
+third party: when you send a capture, Claude Code or Codex transmits it to Anthropic or
+OpenAI under your own account, exactly as if you had pasted it in yourself. See the
+[Privacy Policy](https://secretlifeof.github.io/wusel-capture/privacy).
 
 ## Features
 
@@ -42,7 +47,7 @@ npx skills add wusel-capture
 ```
 
 Then install the browser extension from the
-[latest GitHub release](https://github.com/wusel-capture/wusel-capture/releases/latest)
+[latest GitHub release](https://github.com/secretlifeof/wusel-capture/releases/latest)
 and load it unpacked from `chrome://extensions` (it isn't on the Chrome Web Store yet).
 
 That's all you need. For **zero-prompt delivery** — captures written straight into the
@@ -77,6 +82,21 @@ pnpm --filter @wusel-capture/extension build  # build the Chrome extension → d
 ```
 
 Each package documents itself in its own `README.md`.
+
+### The website
+
+`apps/app` is published to GitHub Pages on every push to `main` that touches it
+(`.github/workflows/pages.yml`). It is prerendered to static HTML — no server. Because
+Pages serves it from a project subpath, CI builds it with `BASE_PATH=/wusel-capture/`;
+locally it runs at `/`. Fonts are self-hosted rather than loaded from Google Fonts, so
+the site makes no third-party requests at all.
+
+## Legal
+
+- [Privacy Policy](https://secretlifeof.github.io/wusel-capture/privacy)
+- [Cookie Policy](https://secretlifeof.github.io/wusel-capture/cookies) — there are none
+- [Terms of Use](https://secretlifeof.github.io/wusel-capture/terms)
+- [Imprint](https://secretlifeof.github.io/wusel-capture/imprint)
 
 ## License
 

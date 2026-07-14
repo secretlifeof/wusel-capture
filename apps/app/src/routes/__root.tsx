@@ -2,12 +2,19 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-r
 import type { ReactNode } from 'react';
 
 import { site } from '@/lib/site';
+
 import appCss from '../app.css?url';
 
 const title = 'Wusel Capture — design in the browser, ship with your AI';
 const description =
   'Mark up any web page in your browser, and let your AI implement the change. Install the Chrome extension and add the skill via npx skills.';
 const ogImage = `${site.url}/og-image.png`;
+
+// The site is served from a GitHub Pages project path (/wusel-capture/), so
+// files in public/ are not at the server root. Vite rewrites the URLs it parses
+// (imports, CSS url()), but not paths we hand-write into <link> tags — those
+// have to be prefixed explicitly. BASE_URL is '/' during dev.
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`.replace(/\/{2,}/g, '/');
 
 export const Route = createRootRoute({
   head: () => ({
@@ -35,15 +42,18 @@ export const Route = createRootRoute({
     links: [
       { rel: 'stylesheet', href: appCss },
       // Modern browsers use the crisp, scalable SVG (the Wusel "W" mark).
-      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      { rel: 'icon', type: 'image/svg+xml', href: asset('favicon.svg') },
       // `alternate icon` keeps the .ico as a legacy-only fallback so Chrome doesn't prefer it.
-      { rel: 'alternate icon', type: 'image/x-icon', href: '/favicon.ico', sizes: 'any' },
-      { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      { rel: 'alternate icon', type: 'image/x-icon', href: asset('favicon.ico'), sizes: 'any' },
+      { rel: 'apple-touch-icon', href: asset('apple-touch-icon.png') },
+      // Geist + Caveat are self-hosted (see app.css). Preload the body face so
+      // the first paint isn't a flash of fallback text.
       {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Geist:wght@300..700&display=swap',
+        rel: 'preload',
+        as: 'font',
+        type: 'font/woff2',
+        href: asset('fonts/Geist-Variable.woff2'),
+        crossOrigin: 'anonymous',
       },
     ],
   }),
@@ -64,7 +74,7 @@ function RootDocument({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-foreground font-sans antialiased">
+      <body className="bg-background font-sans text-foreground antialiased">
         {children}
         <Scripts />
       </body>

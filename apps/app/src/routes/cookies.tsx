@@ -7,73 +7,82 @@ export const Route = createFileRoute('/cookies')({
   component: CookiesPage,
 });
 
+const LAST_UPDATED = '14 July 2026';
+
 function CookiesPage() {
   return (
-    <LegalLayout title="Cookie Policy" updated="[PLACEHOLDER: date]">
-      <Callout title="In short">
+    <LegalLayout title="Cookie Policy" updated={LAST_UPDATED}>
+      <Callout title="The short version">
         <P>
-          This website does not use tracking, advertising, or analytics cookies, so there is no
-          consent banner to manage. Any storage we use is strictly necessary to make the site work,
-          and the browser extension stores its data locally on your own device.
+          This website sets <strong>no cookies at all</strong> — not even &quot;strictly
+          necessary&quot; ones. It runs no analytics, no advertising and no cross-site tracking, and
+          it loads nothing from a third-party CDN. That is why you will never see a cookie banner
+          here: there is nothing to accept and nothing to reject.
         </P>
       </Callout>
 
-      <LegalSection id="what-are-cookies" title="1. What are cookies and similar technologies?">
+      <LegalSection id="what-are-cookies" title="1. What cookies are">
         <P>
-          Cookies are small text files that a website can store in your browser. Similar technologies
-          such as <code className="rounded bg-bark-900/5 px-1 font-mono text-[0.9em]">localStorage</code>{' '}
-          and{' '}
-          <code className="rounded bg-bark-900/5 px-1 font-mono text-[0.9em]">IndexedDB</code> let a
-          site or extension store data on your device. They can be used for essential functions or
-          for tracking; we use them only where strictly necessary.
+          Cookies are small text files a website can store in your browser. Related technologies
+          such as{' '}
+          <code className="rounded bg-bark-900/5 px-1 font-mono text-[0.9em]">localStorage</code>{' '}
+          and <code className="rounded bg-bark-900/5 px-1 font-mono text-[0.9em]">IndexedDB</code>{' '}
+          also let a site or an extension keep data on your device. They can serve essential
+          functions or they can be used to track people. We use no cookies, and use device storage
+          only inside the extension, on your own machine.
         </P>
       </LegalSection>
 
-      <LegalSection id="no-banner" title="2. No consent banner required">
+      <LegalSection id="this-site" title="2. What this website stores">
         <P>
-          We do not set any cookies that require consent. We do not run advertising or cross-site
-          tracking, and we do not build user profiles. Because of this, there is nothing for you to
-          accept or reject here.
+          Nothing. These pages are static HTML, CSS and a little JavaScript. They set no cookies,
+          write nothing to your browser&apos;s storage, and contain no analytics, tag managers,
+          advertising pixels or social embeds.
+        </P>
+        <P>
+          Our fonts are served from this site rather than from Google Fonts or any other font CDN,
+          so that reading these pages does not hand your IP address to a third party.
+        </P>
+        <P>
+          The only party that necessarily sees your request is our host, GitHub Pages, which
+          processes standard connection data in order to deliver the page. That is described in the{' '}
+          <A href="/privacy">Privacy Policy</A>.
         </P>
       </LegalSection>
 
-      <LegalSection id="essential" title="3. Strictly necessary storage">
+      <LegalSection id="extension-storage" title="3. Storage used by the browser extension">
         <P>
-          Strictly necessary storage is used solely to provide functionality you have requested. On
-          this website that is limited to items such as remembering a display preference. These items
-          do not identify you and are not shared with third parties.
+          The extension is a separate thing from this website, and it does use local storage on your
+          own device — never a cookie, and never a server:
         </P>
         <UL>
           <li>
-            [PLACEHOLDER: list each strictly necessary item — name, purpose, and duration — or state
-            &quot;none&quot; if the site stores nothing.]
+            <strong>IndexedDB</strong> holds a capture briefly while it travels from the popup to
+            the editor tab, and keeps only the 10 most recent.
+          </li>
+          <li>
+            <strong>Extension storage</strong> keeps exactly two UI preferences: which AI assistant
+            you picked, and an optional session id you may type in.
           </li>
         </UL>
-      </LegalSection>
-
-      <LegalSection id="extension-storage" title="4. Storage used by the browser extension">
         <P>
-          The Wusel Capture browser extension stores your captures (screenshots and notes) in your
-          browser&apos;s <code className="rounded bg-bark-900/5 px-1 font-mono text-[0.9em]">IndexedDB</code>{' '}
-          on your device. This data never leaves your machine except when you choose to send a
-          capture to your own AI tool or download it. See the <A href="/privacy">Privacy Policy</A>{' '}
-          for details.
+          None of this is used to identify or track you, and none of it is shared with anyone. See
+          the <A href="/privacy">Privacy Policy</A> for the full picture.
         </P>
       </LegalSection>
 
-      <LegalSection id="manage" title="5. How to clear this storage">
+      <LegalSection id="manage" title="4. Clearing this storage">
         <P>
-          You can delete cookies and local storage at any time in your browser settings, and you can
-          remove the extension&apos;s stored captures by clearing site/extension data or by deleting
-          individual captures inside the extension. Clearing strictly necessary storage may reset
-          preferences but will not break the site.
+          You can clear browser storage at any time in your browser settings. Uninstalling the
+          extension removes everything it stored. Nothing here will break as a result — there are no
+          preferences we depend on.
         </P>
       </LegalSection>
 
-      <LegalSection id="more" title="6. Further information">
+      <LegalSection id="changes" title="5. If this ever changes">
         <P>
-          If we introduce any non-essential cookies in the future, we will update this policy and
-          request your consent beforehand where the law requires it.
+          If we ever introduce a cookie that is not strictly necessary, we will update this page and
+          ask for your consent beforehand where the law requires it. We have no plans to.
         </P>
       </LegalSection>
     </LegalLayout>
