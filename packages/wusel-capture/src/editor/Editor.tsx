@@ -4,12 +4,12 @@ import { fileStamp } from '../lib/id';
 import { getCapture } from '../storage';
 import type { Annotation, CapturePayload } from '../types';
 import { type Tool, DEFAULT_COLOR, defaultFontSize } from './annotations';
-import { Canvas } from './canvas';
+import { Canvas } from './Canvas';
 import { type ExportFormat, buildBrowserCapture, compositeImage, downloadBlob, downloadJson } from './export';
 import { getProviderOption } from './providers';
 import { SidePanel, type SendStatus } from './side-panel';
 import { sendCapture } from './send';
-import { Toolbar } from './toolbar';
+import { Toolbar } from './Toolbar';
 import { useHistory } from './useHistory';
 
 function isTypingTarget(el: EventTarget | null): boolean {
