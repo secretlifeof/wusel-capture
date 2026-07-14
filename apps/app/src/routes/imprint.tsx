@@ -20,8 +20,6 @@ function ImprintPage() {
         <P>
           {site.maintainer}
           <br />
-          Berlin, Germany
-          <br />
           Email: <A href={`mailto:${site.contactEmail}`}>{site.contactEmail}</A>
         </P>
         <P>

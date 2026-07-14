@@ -34,8 +34,6 @@ function PrivacyPage() {
         <P>
           {site.maintainer}
           <br />
-          Berlin, Germany
-          <br />
           Email: <A href={`mailto:${site.contactEmail}`}>{site.contactEmail}</A>
         </P>
         <P>
@@ -219,9 +217,9 @@ function PrivacyPage() {
           <A href={`mailto:${site.contactEmail}`}>{site.contactEmail}</A>.
         </P>
         <P>
-          You also have the right to lodge a complaint with a data protection supervisory authority.
-          For us that is the Berliner Beauftragte für Datenschutz und Informationsfreiheit, but you
-          may also contact the authority where you live or work.
+          You also have the right to lodge a complaint with a data protection supervisory authority —
+          in particular the one where you live, where you work, or where you believe the issue
+          occurred.
         </P>
       </LegalSection>
 
