@@ -18,3 +18,7 @@ node_modules
 # TypeScript build info
 *.tsbuildinfo
 **/tsconfig.tsbuildinfo
+
+# Packed extension — regenerate with `pnpm --filter @wusel-capture/extension build`
+# and zip dist/. Uploaded to the Chrome Web Store by hand, not served from here.
+packages/wusel-capture/*.zip
