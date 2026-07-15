@@ -91,6 +91,30 @@ Pages serves it from a project subpath, CI builds it with `BASE_PATH=/wusel-capt
 locally it runs at `/`. Fonts are self-hosted rather than loaded from Google Fonts, so
 the site makes no third-party requests at all.
 
+### The extension
+
+To run the extension in development:
+
+1. Build it:
+
+   ```bash
+   pnpm --filter @wusel-capture/extension build
+   ```
+
+2. Open `chrome://extensions`, enable **Developer mode**, click **Load unpacked**,
+   and select `packages/wusel-capture/dist`.
+
+3. For iterative work, run the watcher and reload the extension in
+   `chrome://extensions` after each rebuild (MV3 has no hot reload for the
+   service worker / content scripts):
+
+   ```bash
+   pnpm --filter @wusel-capture/extension dev
+   ```
+
+See [`packages/wusel-capture`](./packages/wusel-capture/README.md) for the full
+architecture and details.
+
 ## Legal
 
 - [Privacy Policy](https://secretlifeof.github.io/wusel-capture/privacy)
